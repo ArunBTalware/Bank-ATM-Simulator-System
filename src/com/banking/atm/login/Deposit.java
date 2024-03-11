@@ -15,95 +15,95 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-public class Deposit extends JFrame implements ActionListener{
+public class Deposit extends JFrame implements ActionListener {
 
 	JTextField amount;
-	JButton deposit,back;
+	JButton deposit, back;
 	String pinnumber;
-	Deposit(String pinnuber){
-		
+
+	Deposit(String pinnuber) {
+
 		this.pinnumber = pinnuber;
-		setLayout(null);//border layout null
-		
+		setLayout(null);// border layout null
+
 		ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icons/atm.jpg"));
 		Image ii = i1.getImage().getScaledInstance(900, 900, Image.SCALE_DEFAULT);
 		ImageIcon i3 = new ImageIcon(ii);
 		JLabel image = new JLabel(i3);
-		image.setBounds(0,0,900,800);
+		image.setBounds(0, 0, 900, 800);
 		add(image);
-		
-		//make label for transaction
+
+		// make label for transaction
 		JLabel text = new JLabel("Enter the amount you want to diposit");
-		text.setBounds(150,280,600,35);
+		text.setBounds(150, 280, 600, 35);
 		text.setForeground(Color.WHITE);
-		text.setFont(new Font("Raleway",Font.BOLD, 20));
+		text.setFont(new Font("Raleway", Font.BOLD, 20));
 		image.add(text);
-		
-		//make text filed for amount
+
+		// make text filed for amount
 		amount = new JTextField();
-		amount.setBounds(150,330,350,30);
-		amount.setFont(new Font("Arial",Font.BOLD,24));
+		amount.setBounds(150, 330, 350, 30);
+		amount.setFont(new Font("Arial", Font.BOLD, 24));
 		image.add(amount);
-		
-		//create button for diposit
+
+		// create button for diposit
 		deposit = new JButton("Deposit");
 		deposit.setBackground(Color.GREEN);
-		deposit.setFont(new Font("Raleway",Font.BOLD,14));
-		deposit.setBounds(355,430,150,30);
+		deposit.setFont(new Font("Raleway", Font.BOLD, 14));
+		deposit.setBounds(355, 430, 150, 30);
 		deposit.addActionListener(this);
-		image.add(deposit);	
-		
-		//create back button
+		image.add(deposit);
+
+		// create back button
 		back = new JButton("Back");
 		back.setBackground(Color.RED);
-		back.setFont(new Font("Raleway",Font.BOLD,14));
-		back.setBounds(355,465,150,30);
+		back.setFont(new Font("Raleway", Font.BOLD, 14));
+		back.setBounds(355, 465, 150, 30);
 		back.addActionListener(this);
-		image.add(back);	
-		//create deposit frame 
-		setSize(900,900);
-		setLocation(300,0);
+		image.add(back);
+		// create deposit frame
+		setSize(900, 900);
+		setLocation(300, 0);
 		setVisible(true);
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent al) {
-		
-		if(al.getSource() == back) {
+
+		if (al.getSource() == back) {
 			setVisible(false);
 			new Transaction(pinnumber).setVisible(true);
-		} else if(al.getSource() == deposit) {
-			
+		} else if (al.getSource() == deposit) {
+
 			String amountDiposit = amount.getText();
 			Date date = new Date();
-			if(amountDiposit.equals("")) {
-				
+			if (amountDiposit.equals("")) {
+
 				JOptionPane.showMessageDialog(null, "Please enter amount");
-			}else {
-			
-			try {
-				
-				 JdbcConnection con = new JdbcConnection();
-				 String query = "insert into bank values('"+pinnumber+"','"+date+"','Deposit','"+amountDiposit+"') ";
-				 con.stm.executeUpdate(query);
-				 JOptionPane.showMessageDialog(null,"Rs "+amountDiposit+" Deposited Successfully");
-		         setVisible(false);
-				 new Transaction(pinnumber).setVisible(true);
-				 
-			   }catch(Exception ex) {
-			
-			        System.out.println(ex);
-		       }
+			} else {
+
+				try {
+
+					JdbcConnection con = new JdbcConnection();
+					String query = "insert into bank values('" + pinnumber + "','" + date + "','Deposit','"
+							+ amountDiposit + "') ";
+					con.stm.executeUpdate(query);
+					JOptionPane.showMessageDialog(null, "Rs " + amountDiposit + " Deposited Successfully");
+					setVisible(false);
+					new Transaction(pinnumber).setVisible(true);
+
+				} catch (Exception ex) {
+
+					System.out.println(ex);
+				}
 			}
-		} 
-			
+		}
+
 	}
-	
-	
+
 	public static void main(String[] args) {
-		
+
 		new Deposit("");
 	}
-	
 
 }
